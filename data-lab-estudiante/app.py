@@ -43,11 +43,22 @@ def operacion():
             resultado = "Atendido: " + estado[tipo].pop(0)
         else: return jsonify(error="Acción no válida"), 400
     elif tipo == "lista":
-        if accion == "agregar": estado[tipo].append(valor)
+        if accion == "agregar":
+            estado[tipo].append(valor)
+
         elif accion == "eliminar":
-            if valor not in estado[tipo]: return jsonify(error="No encontrado"), 404
+            if valor not in estado[tipo]:
+                return jsonify(error="No encontrado"), 404
             estado[tipo].remove(valor)
-        else: return jsonify(error="Acción no válida"), 400
+
+        elif accion == "buscar":
+            if valor in estado[tipo]:
+                posicion = estado[tipo].index(valor) + 1
+                resultado = f"Elemento encontrado en la posición {posicion}"
+            else:
+                return jsonify(error="Elemento no encontrado en la lista"), 404
+        else:
+            return jsonify(error="Acción no válida"), 400
     elif tipo == "arbol":
         # Cada nodo guarda su nombre y el nombre de su padre.
         if accion == "agregar":
